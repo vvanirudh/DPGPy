@@ -11,7 +11,7 @@ def plotTrajs(trajs, string_in):
     """
     import matplotlib.pyplot as plt
     import numpy as np
-    
+        
     n_trajs = trajs['n_traj']
     colors = ['r','b','g','y','m','c','k']
 

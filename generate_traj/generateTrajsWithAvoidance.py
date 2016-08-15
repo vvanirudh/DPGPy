@@ -51,5 +51,6 @@ def generateTrajsWithAvoidance(n_traj, n_points, pLimit, speed, sigma_noise):
     trajs['cluster'] = np.ones((n_traj*2,1))
     trajs['sweep_count'] = 1
     trajs['n_clus'] = 1
-
+    trajs['n_points'] = n_points
+    
     return trajs

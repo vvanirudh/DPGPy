@@ -10,3 +10,7 @@ sys.path.append('generate_traj')
 sys.path.append('Gibbs')
 sys.path.append('plotting')
 sys.path.append('DP')
+
+
+#import matplotlib
+#%matplotlib.use('TkAgg')

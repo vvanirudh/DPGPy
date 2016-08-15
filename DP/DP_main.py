@@ -5,10 +5,10 @@
 
 from generateTrajsWithAvoidance import generateTrajsWithAvoidance
 from plotTrajs import plotTrajs
+from groupTraj import groupTraj
 
 import GPy as gp
 import numpy as np
-
 
 # Hyperparameters
 lx = 2
@@ -38,8 +38,12 @@ sigma_input = 1
 hyperparam = [lx, ly, sigma_input, sigma_noise]
 n_sweep = 200
 
-trajs['n_clus'] = np.round(np.log(n_traj))
+trajs['n_clus'] = int(np.round(np.log(n_traj)))
 cluster = np.zeros((n_traj, n_sweep))
-cluster[:,0] = np.random.uniform(low=0, high=trajs['n_clus'], size=(n_traj,1))
+cluster[:,0] = np.random.uniform(low=0, high=trajs['n_clus'], size=(n_traj,))
 
 trajs['cluster'] = cluster
+count, sparseGPs = groupTraj(0, trajs);
+
+alpha = 0.5
+
