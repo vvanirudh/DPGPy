@@ -47,7 +47,7 @@ def generateTwoAgentTraj(n, pLimit, speed, threshold, func):
         dt1[i] = np.sum((traj1[i+1] - traj1[i])**2) / speed;
         dt2[i] = np.sum((traj2[i+1] - traj2[i])**2) / speed;
 
-    dt1[n] = dt1[n-1]
-    dt2[n] = dt2[n-1]
+    dt1[n-1] = dt1[n-2]
+    dt2[n-1] = dt2[n-2]
 
     return traj1, traj2, dt1, dt2

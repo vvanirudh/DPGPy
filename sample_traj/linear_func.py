@@ -6,7 +6,11 @@ import numpy as np
 
 
 def linear_func(n, pLimits):
-
+    """
+    Params:
+    n = number of points in the trajectory
+    pLimits = Limits of the trajectory
+    """
     offset = 1.
     x_min = pLimits[0] + offset
     x_max = pLimits[1] - offset
