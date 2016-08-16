@@ -46,4 +46,8 @@ trajs['cluster'] = cluster
 count, sparseGPs = groupTraj(0, trajs);
 
 alpha = 0.5
+sparseGPs = initialize_SparseGPs_array(hyperparam, trajs, sparseGPs)
 
+#################################################################
+# Main Loop
+#################################################################
