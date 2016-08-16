@@ -23,6 +23,9 @@ def groupTraj(sweep_count, trajs):
     count = np.ones(trajs['n_clus'],)
     count = count.astype(int)
 
+    # Assume that all trajectories have same number of points!!
+    n_points = trajs['n_points']
+
     sparseGPs = [{} for i in range(trajs['n_clus'])]
     
     for i in range(trajs['n_clus']):
@@ -32,13 +35,13 @@ def groupTraj(sweep_count, trajs):
 
         # Concatenate all trajectories belonging to the same cluster
         sparseGPs[i]['data'] = {}
-        sparseGPs[i]['data']['traj'] = np.zeros((trajs['n_points'], count[i]*2))
-        sparseGPs[i]['data']['v'] = np.zeros((trajs['n_points'], count[i]*2))
+        sparseGPs[i]['data']['traj'] = np.zeros((n_points*count[i], 2))
+        sparseGPs[i]['data']['v'] = np.zeros((n_points*count[i], 2))
         sparseGPs[i]['count'] = count[i]
 
         for j in range(int(count[i])):
-            sparseGPs[i]['data']['traj'][:,j:j+2] = trajs['data'][indices[j]]['traj']
-            sparseGPs[i]['data']['v'][:,j:j+2] = trajs['data'][indices[j]]['v']
+            sparseGPs[i]['data']['traj'][j*n_points:(j+1)*n_points,:] = trajs['data'][indices[j]]['traj']
+            sparseGPs[i]['data']['v'][j*n_points:(j+1)*n_points,:] = trajs['data'][indices[j]]['v']
 
     return count, sparseGPs
             

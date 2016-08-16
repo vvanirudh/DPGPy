@@ -12,7 +12,8 @@ def build_sparseGP(traj, speed, hyperparam):
     hyperparam = set of hyperparameters 
     """
     import GPy as gp
-
+    import ipdb
+    
     # Retrieve hyperparameters
     lx = hyperparam[0]
     ly = hyperparam[1]
@@ -22,6 +23,14 @@ def build_sparseGP(traj, speed, hyperparam):
     # Construct kernel
     K = gp.kern.RBF(input_dim=2, lengthscale=[lx,ly], variance=sigma_input, ARD=True) + gp.kern.White(input_dim=2, variance=sigma_noise)
 
-    # Model
-    m = gp.models.SparseGPRegression(traj, speed, kernel=K)
+    speed_vec = speed[:,None]
+
+    # Debug statement
+    #ipdb.set_trace()
     
+    # Model
+    m = gp.models.SparseGPRegression(traj, speed_vec, kernel=K)
+    # Optimize?
+    m.optimize('bfgs', messages=False, max_f_eval=100)
+    
+    return m
