@@ -137,4 +137,4 @@ for sweep_num in range(n_sweep):
 ##############################################################
 burn_in = np.floor(n_sweep/2)
 splicing = 2
-[avgSample, mode, config, config_count] = gibbs_sampling_postProcessing(trajs['cluster'], burn_in, splicing)
+avgSample, mode, config, config_count = gibbs_sampling_postProcessing(trajs['cluster'], burn_in, splicing)

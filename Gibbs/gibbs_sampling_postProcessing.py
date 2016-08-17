@@ -54,7 +54,8 @@ def gibbs_sampling_postProcessing(cluster, burn_in, splicing):
 
     mode = config[value_ind,:]
     avgSample = averageSample(cluster_p)
-        
+    
+    return avgSample, mode, config, config_count
 
 def reorder_vec(vec):
     """
