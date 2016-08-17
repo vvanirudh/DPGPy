@@ -10,7 +10,8 @@ def build_SparseGPs_array(hyperparam, sparseGPs):
     hyperparam = vector containing the hyperparameters
     sparseGPs = structure containing the trajectory data    
     """
-
+    from build_sparseGP import build_sparseGP
+    
     num_motion_patterns = len(sparseGPs)
     
     for i in range(num_motion_patterns):

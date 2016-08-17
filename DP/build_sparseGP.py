@@ -31,6 +31,6 @@ def build_sparseGP(traj, speed, hyperparam):
     # Model
     m = gp.models.SparseGPRegression(traj, speed_vec, kernel=K)
     # Optimize?
-    m.optimize('bfgs', messages=False, max_f_eval=100)
+    #m.optimize('bfgs', messages=False, max_f_eval=100)
     
     return m

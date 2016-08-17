@@ -12,6 +12,7 @@ from traj_likelihood_indep import traj_likelihood_indep
 
 import GPy as gp
 import numpy as np
+import ipdb
 
 # Hyperparameters
 lx = 2
@@ -72,9 +73,9 @@ for sweep_num in range(n_sweep):
     # Compute likelihoods for each trajectory from each existing cluster
     
     # Complete log-likelihood
-    L = np.zeros((trajs['n_traj'], trajs['n_clus'] + 1))
+    L = np.zeros((n_traj, trajs['n_clus'] + 1))
     # GP log-likelihood
-    L_GP = np.zeros((trajs['n_traj'], trajs['n_clus'] + 1))
+    L_GP = np.zeros((n_traj, trajs['n_clus'] + 1))
 
     for k in range(n_traj):
         # Existing clusters
@@ -106,14 +107,19 @@ for sweep_num in range(n_sweep):
         l_GP = L_GP[k,:] - normalization_const
 
         p = np.exp(l)
-        p[trajs['n_clus']+1] = np.mean(np.exp(l_GP[:-1])) * (alpha / (n_traj - 1 + alpha))
+        p[trajs['n_clus']] = np.mean(np.exp(l_GP[:-1])) * (alpha / (n_traj - 1 + alpha))
 
+        #ipdb.set_trace()
+
+        # Convert p to probabilities
+        p = p / np.sum(p)
+        
         # Draw z_k
         z_k = np.random.choice(trajs['n_clus']+1, 1, replace=True, p=p)
         # Update cluster
         if z_k == trajs['n_clus']:
             # New cluster
-            z_k = count.shape[0] + 1
+            z_k = count.shape[0]
             count = np.append(count, 0)
 
         count[trajs['cluster'][k, sweep_num]] = count[trajs['cluster'][k,sweep_num]] - 1
@@ -122,10 +128,13 @@ for sweep_num in range(n_sweep):
 
     # Initialize for the next iteration
     count, sparseGPs = groupTraj(sweep_num, trajs)
-    if sweep_num < n_sweep:
+    if sweep_num < n_sweep-1:
         trajs['cluster'][:,sweep_num+1] = trajs['cluster'][:,sweep_num]
 
 # End Loop
 ##############################################################
 # Gibbs Sampling
-##############################################################        
+##############################################################
+burn_in = np.floor(n_sweep/2)
+splicing = 2
+[avgSample, mode, config, config_count] = gibbs_sampling_postProcessing(trajs['cluster'], burn_in, splicing)
