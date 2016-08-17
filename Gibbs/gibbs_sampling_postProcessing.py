@@ -13,18 +13,19 @@ def gibbs_sampling_postProcessing(cluster, burn_in, splicing):
     """
     import numpy as np
     from averageSample import averageSample
+    import ipdb
 
     # Burn in
-    cluster_p = cluster[:,burn_in+1:]
+    cluster_p = cluster[burn_in+1:,:]
 
     # Splicing
-    cluster_p = cluster_p[:,::splicing]
+    cluster_p = cluster_p[::splicing,:]
 
     # Reordering
-    n,m = cluster_p.shape
+    m,n = cluster_p.shape
 
     for i in range(m):
-        cluster_p[:,i] = reorder_vec(cluster_p[:,i])
+        cluster_p[i,:] = reorder_vec(cluster_p[i,:])
 
     config = []
     config_count = []
@@ -34,17 +35,19 @@ def gibbs_sampling_postProcessing(cluster, burn_in, splicing):
 
     while mm > 0:
 
-        config.append(cluster_pp[:,0])
+        config.append(cluster_pp[0,:])
 
-        diff = np.max(np.abs(cluster_pp - np.tile(cluster_pp[:,1], 1, mm)),axis=0)
+        tmp_mat = (cluster_pp - np.tile(config[-1], (mm,1)))
+
+        diff = np.max(tmp_mat.T,axis=0)
 
         ind = np.where(diff!=0)
 
-        cluster_pp = cluster_pp[:,ind]
+        cluster_pp = cluster_pp[ind[0],:]
 
         config_count.append(mm - ind[0].shape[0])
 
-        n,mm = cluster_pp.shape
+        mm,n = cluster_pp.shape
 
     # Convert config and config_count to arrays
     config = np.array(config)

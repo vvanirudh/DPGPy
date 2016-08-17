@@ -12,13 +12,13 @@ def averageSample(cluster):
     import numpy as np
     from similarityDist import similarityDist
 
-    num_traj, num_sample = cluster.shape
+    num_sample, num_traj = cluster.shape
 
-    similarity_matrix = np.zeros(num_sample,num_sample)
+    similarity_matrix = np.zeros((num_sample,num_sample))
 
     for i in range(num_sample):
         for j in range(i):
-            similarity_matrix[i,j] = similarityDist(cluster[:,i], cluster[:,j])
+            similarity_matrix[i,j] = similarityDist(cluster[i,:], cluster[j,:])
             similarity_matrix[j,i] = similarity_matrix[i,j]
 
     # Best configuration
@@ -31,5 +31,5 @@ def averageSample(cluster):
     reduced_sim_score = np.sum(reduced_sim_matrix, axis=0)
     ind = np.argmax(reduced_sim_score)
 
-    sample = cluster[:,order_ind[ind]]
+    sample = cluster[order_ind[ind],:]
     return sample

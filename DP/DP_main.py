@@ -9,6 +9,7 @@ from groupTraj import groupTraj
 from initialize_SparseGPs_array import initialize_SparseGPs_array
 from build_SparseGPs_array import build_SparseGPs_array
 from traj_likelihood_indep import traj_likelihood_indep
+from gibbs_sampling_postProcessing import gibbs_sampling_postProcessing
 
 import GPy as gp
 import numpy as np
@@ -24,7 +25,7 @@ sigma_input = 1
 # Generate n trajectories
 ###############################################################
 
-n_traj = 1
+n_traj = 2
 n_points = 30
 x_min, x_max, y_min, y_max = (-5,5,-5,5)
 pLimit = [x_min, x_max, y_min, y_max]
@@ -40,10 +41,10 @@ plotTrajs(trajs, 'initialization')
 # DPGP initialization
 ###############################################################
 hyperparam = [lx, ly, sigma_input, sigma_noise]
-n_sweep = 2
+n_sweep = 10
 
 trajs['n_clus'] = int(np.round(np.log(n_traj)))
-cluster = np.zeros((n_traj, n_sweep))
+cluster = np.zeros((n_traj, n_sweep), dtype=int)
 cluster[:,0] = np.random.uniform(low=0, high=trajs['n_clus'], size=(n_traj,))
 
 trajs['cluster'] = cluster
@@ -137,4 +138,5 @@ for sweep_num in range(n_sweep):
 ##############################################################
 burn_in = np.floor(n_sweep/2)
 splicing = 2
-avgSample, mode, config, config_count = gibbs_sampling_postProcessing(trajs['cluster'], burn_in, splicing)
+avgSample, mode, config, config_count = gibbs_sampling_postProcessing(trajs['cluster'].T, burn_in, splicing)
+
