@@ -19,12 +19,13 @@ def plotTrajs(trajs, string_in):
 
     num_cluster = np.max(trajs['cluster'][:,-1])+1
 
+    plt.figure()
     for i in range(n_trajs):
         clus_assign = trajs['cluster'][i,-1]
         c = colors[np.mod(int(clus_assign), 7)]
 
         traj = trajs['data'][i]['traj']
-        
+
         plt.plot(traj[:,0], traj[:,1], c)
         plt.plot(traj[0,0], traj[0,1], c+'*')
 

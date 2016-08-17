@@ -42,7 +42,7 @@ plotTrajs(trajs, 'initialization')
 # DPGP initialization
 ###############################################################
 hyperparam = [lx, ly, sigma_input, sigma_noise]
-n_sweep = 100
+n_sweep = 20
 
 trajs['n_clus'] = int(np.round(np.log(n_traj)))
 cluster = np.zeros((n_traj, n_sweep), dtype=int)
@@ -137,7 +137,7 @@ for sweep_num in range(n_sweep):
 ##############################################################
 # Gibbs Sampling
 ##############################################################
-burn_in = np.floor(n_sweep/2)
+burn_in = int(np.floor(n_sweep/2))
 splicing = 2
 avgSample, mode, config, config_count = gibbs_sampling_postProcessing(trajs['cluster'].T, burn_in, splicing)
 

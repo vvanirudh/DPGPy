@@ -25,7 +25,7 @@ def averageSample(cluster):
     similarity_score = np.sum(similarity_matrix, axis=0)
 
     # Throw away the bottom 30% samples
-    reduced_num_samples = np.floor(0.5 * num_sample)
+    reduced_num_samples = int(np.floor(0.5 * num_sample))
     order_ind = np.argsort(similarity_score)
     reduced_sim_matrix = similarity_matrix[order_ind[0:reduced_num_samples], order_ind[0:reduced_num_samples]]
     reduced_sim_score = np.sum(reduced_sim_matrix, axis=0)
