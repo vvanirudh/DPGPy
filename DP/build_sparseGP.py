@@ -30,6 +30,7 @@ def build_sparseGP(traj, speed, hyperparam):
     
     # Model
     m = gp.models.SparseGPRegression(traj, speed_vec, kernel=K)
+    #m.likelihood.variance = sigma_noise
     # Optimize?
     #m.optimize('bfgs', messages=False, max_f_eval=100)
     

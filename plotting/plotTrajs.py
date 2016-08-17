@@ -17,7 +17,7 @@ def plotTrajs(trajs, string_in):
 
     # Not implementing subplots, for now
 
-    num_cluster = np.max(trajs['cluster'][:,-1])
+    num_cluster = np.max(trajs['cluster'][:,-1])+1
 
     for i in range(n_trajs):
         clus_assign = trajs['cluster'][i,-1]
