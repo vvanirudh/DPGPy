@@ -11,16 +11,17 @@ from build_SparseGPs_array import build_SparseGPs_array
 from traj_likelihood_indep import traj_likelihood_indep
 from gibbs_sampling_postProcessing import gibbs_sampling_postProcessing
 from plotSparseGP_array import plotSparseGP_array
+from findBestPattern import findBestPattern
 
 import GPy as gp
 import numpy as np
 import ipdb
 
 # Hyperparameters
-lx = 2
-ly = 2
-sigma_noise = 0.5
-sigma_input = 1
+lx = 4
+ly = 4
+sigma_noise = 1.0
+sigma_input = 1.
 
 ###############################################################
 # Generate n trajectories
@@ -42,7 +43,7 @@ plotTrajs(trajs, 'initialization')
 # DPGP initialization
 ###############################################################
 hyperparam = [lx, ly, sigma_input, sigma_noise]
-n_sweep = 20
+n_sweep = 200
 
 trajs['n_clus'] = int(np.round(np.log(n_traj)))
 cluster = np.zeros((n_traj, n_sweep), dtype=int)
@@ -106,6 +107,7 @@ for sweep_num in range(n_sweep):
         l = L[k,:] - normalization_const
 
         # TODO : Should we use the same normalization const as above?
+        normalization_const = np.max(L_GP[k][:-1])
         l_GP = L_GP[k,:] - normalization_const
 
         p = np.exp(l)
@@ -142,8 +144,18 @@ splicing = 2
 avgSample, mode, config, config_count = gibbs_sampling_postProcessing(trajs['cluster'].T, burn_in, splicing)
 
 trajs['cluster'][:,-1] = mode
-plotTrajs(trajs, 'mode')
+#plotTrajs(trajs, 'mode')
+
+count, sparseGPs = groupTraj(sweep_num, trajs)
+sparseGPs = build_SparseGPs_array(hyperparam, sparseGPs)
+for i in range(n_traj):
+    ind = findBestPattern(trajs['data'][i], sparseGPs)
+    trajs['cluster'][i,-1] = ind
+
+plotTrajs(trajs, 'reassigned cluster')
 
 count, sparseGPs = groupTraj(sweep_num, trajs)
 sparseGPs = build_SparseGPs_array(hyperparam, sparseGPs)
 plotSparseGP_array(sparseGPs, 5)
+
+print "Found " + str(len(sparseGPs)) + " clusters"

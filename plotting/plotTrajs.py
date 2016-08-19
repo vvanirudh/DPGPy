@@ -31,4 +31,5 @@ def plotTrajs(trajs, string_in):
 
     plt.title(string_in+' - found '+str(num_cluster) + ' clusters, total ' + str(n_trajs) + ' trajs')
     plt.axis('equal')
-    plt.show()
+    plt.draw()
+    #plt.show()

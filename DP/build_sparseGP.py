@@ -21,7 +21,7 @@ def build_sparseGP(traj, speed, hyperparam):
     sigma_noise = hyperparam[3]
 
     # Construct kernel
-    K = gp.kern.RBF(input_dim=2, lengthscale=[lx,ly], variance=sigma_input, ARD=True) + gp.kern.White(input_dim=2, variance=sigma_noise)
+    K = gp.kern.RBF(input_dim=2, lengthscale = lx, variance=sigma_input) + gp.kern.White(input_dim=2, variance=sigma_noise)
 
     speed_vec = speed[:,None]
 
@@ -29,7 +29,8 @@ def build_sparseGP(traj, speed, hyperparam):
     #ipdb.set_trace()
     
     # Model
-    m = gp.models.SparseGPRegression(traj, speed_vec, kernel=K)
+    #m = gp.models.SparseGPRegression(traj, speed_vec, kernel=K)
+    m = gp.models.GPRegression(traj, speed_vec, kernel=K)
     #m.likelihood.variance = sigma_noise
     # Optimize?
     #m.optimize('bfgs', messages=False, max_f_eval=100)

@@ -16,12 +16,15 @@ def generateTrajsWithAvoidance(n_traj, n_points, pLimit, speed, sigma_noise):
     import numpy as np
     from generateTwoAgentTraj import generateTwoAgentTraj
     from linear_func import linear_func
+    from quadratic import quadratic
     from processTraj import processTraj
 
+    #func = [linear_func, quadratic]
+    #num_func = len(func)
     func = linear_func
 
     traj_counter = 0
-    threshold = 0.5
+    threshold = 0.3
 
     trajs = {}
     trajs['data'] = [{} for i in range(n_traj*2)]
@@ -29,7 +32,7 @@ def generateTrajsWithAvoidance(n_traj, n_points, pLimit, speed, sigma_noise):
     while traj_counter < n_traj*2:
 
         speed_in = speed
-
+        
         traj1, traj2, dt1, dt2 = generateTwoAgentTraj(n_points, pLimit, speed, threshold, func)
 
         traj1, v1 = processTraj(traj1, dt1, sigma_noise)

@@ -37,4 +37,6 @@ def plotSparseGP(x, y, dx_dt, dy_dt, traj):
     plt.quiver(x, y, dx_dt, dy_dt)
     plt.plot(traj[:,0], traj[:,1], 'ro')
     plt.axis((x_min, x_max, y_min, y_max))
-    plt.show()
+    plt.axis('equal')
+    plt.draw()
+    #plt.show()
