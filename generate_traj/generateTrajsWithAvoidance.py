@@ -7,7 +7,7 @@
 def generateTrajsWithAvoidance(n_traj, n_points, pLimit, speed, sigma_noise):
     """
     Params:
-    n_traj = number of trajectories
+    n_traj = number of pair of trajectories
     n_points = number of points in each trajectory
     pLimit = limits of the trajectories
     speed = speed of the agents

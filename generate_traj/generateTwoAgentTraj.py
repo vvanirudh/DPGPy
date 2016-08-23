@@ -23,7 +23,8 @@ def generateTwoAgentTraj(n, pLimit, speed, threshold, func):
     traj2 = np.flipud(traj2)
 
     traj1 = traj1 + (np.random.rand() - 0.5)
-    traj2 = traj2 + (np.random.rand() - 0.5)
+    # CHANGE to ensure same motion pattern always
+    traj2 = traj2 - (np.random.rand() - 0.5)
 
     while True:
         
